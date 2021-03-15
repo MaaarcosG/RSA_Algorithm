@@ -50,7 +50,7 @@ def decrypt(msg_encrypt, msg_len, key, size=128):
 
 def encrypt_file(message, filename_encrypt, keyFile, size=128):
     # leemos el archivo de las llaves
-    with open(keyFile, 'r') as file:
+    with open(keyFile, 'r+') as file:
         content = file.read()
     file.close()
 
@@ -69,13 +69,13 @@ def encrypt_file(message, filename_encrypt, keyFile, size=128):
     content = ','.join(encrypted)
 
     content = '%s_%s' % (len(message), content)
-    with open(filename_encrypt, 'w') as file:
+    with open(filename_encrypt, 'w+') as file:
         file.write(content)
     file.close()
 
 def decrypt_file(filename_encrypt, keyFilename, size=100):
     # leemos el archivo de las llaves
-    with open(keyFilename, 'r') as file:
+    with open(keyFilename, 'r+') as file:
         content = file.read()
     file.close()
 
@@ -99,4 +99,9 @@ def decrypt_file(filename_encrypt, keyFilename, size=100):
         desencrypted.append(int(i))
 
     msg = decrypt(desencrypted, msg_len, key, size)
+
+    with open('decrypt.txt', 'w+') as file:
+        file.write(msg)
+    file.close()
+
     return msg
