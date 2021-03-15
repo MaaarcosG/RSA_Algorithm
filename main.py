@@ -1,4 +1,5 @@
 import rsa
+import generate_keys
 
 main = 'Bienvenido.\n 1. Encriptar\n 2. Desencriptar\n 3. Salir\nOpcion: '
 print('-'*len(main))
@@ -7,14 +8,16 @@ opcion = input(main)
 while True:
     if opcion == '1':
         mensaje = input('Escriba el mensaje que desea encriptar: ')
-        plain_text = rsa.encrypt_file('encrypt.txt', mensaje)
+        publicKeyFile = 'Llaves/publicKey.txt' 
+        filename_encrypt = 'encrypt.txt'
+        cyphertext = rsa.encrypt_file(mensaje, filename_encrypt, publicKeyFile)
         break
 
     if opcion == '2':
-        # filename = input('Ingrese el nombre del archivo encriptado (encrypt.txt): ')
-        filename = 'encrypt.txt'
-        text = rsa.decrypt_file(filename)
-        print(text)
+        privateKeyFile = 'Llaves/privateKey.txt'
+        cypher = 'encrypt.txt'
+        plaintext = rsa.decrypt_file(cypher, privateKeyFile)
+        print(plaintext)
         break
     
     if opcion == '3':

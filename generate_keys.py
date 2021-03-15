@@ -1,9 +1,11 @@
 from random import randrange
 from sympy import isprime
 
-size = 20
+'''
+    SIZE = indica el tamano para la oracion
+'''
 
-def random_prime():
+def random_prime(size=100):
     while True:
         # genera numeros primos a la azar, similares en magnitud, pero diferentes en longitud
         prime = randrange(2**(size-1), 2**(size))
@@ -21,7 +23,7 @@ def euclidiano(a, b):
 def inverse(e, lambda_n):
     if euclidiano(e, lambda_n) != 1:
         return None
-    
+
     '''
        Algoritmo extenso de euclidiano
        http://gordosfrikis.blogspot.com/2012/12/algoritmo-de-euclides-extendidopython.html
@@ -37,7 +39,7 @@ def inverse(e, lambda_n):
     # print(u1)
     return u1 % lambda_n
 
-def generate_e(lambda_n):
+def generate_e(lambda_n, size=100):
     while True:
         e = randrange(2**(size-1), 2**(size))
         # revisamos si cumple con el algoritmo
@@ -45,16 +47,13 @@ def generate_e(lambda_n):
             break
     return e
 
-def generate_keys():
+def generate_keys(size):
     # tomamos los numeros randoms
-    p = random_prime()
-    q = random_prime()
+    p = random_prime(size)
+    q = random_prime(size)
 
-    n = p*q
+    n = p * q
     lambda_n = (p - 1) * (q - 1)
-    
-    # tamano para las llaves
-    size = 20
 
     e = generate_e(lambda_n)
     d = inverse(e, lambda_n)
@@ -62,10 +61,21 @@ def generate_keys():
     public_key = (n, e)
     private_key = (n, d)
 
+    with open('Llaves/publicKey.txt', 'w') as file:
+        file.write('%s,%s' % (public_key[0], public_key[1]))
+    file.close()
+
+    with open('Llaves/privateKey.txt', 'w') as file:
+        file.write('%s,%s' % (private_key[0], private_key[1]))
+    file.close()
+
     return (public_key, private_key)
     
-if __name__ == '__main__':
-    public, private = generate_keys()
-    generate_key_file()
+def main_keys():
+    public, private = generate_keys(100)
     n, e = public
-    print(n)
+    n, d = private
+    print('Llaves generadas....')
+
+if __name__=='__main__':
+    main_keys()
